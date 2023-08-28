@@ -41,8 +41,10 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\" : \"\", \"content\" : \"내용입니다.\"}")
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.title").value("title을 입력해주세요"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("$.validation.title").value("title을 입력해주세요"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
