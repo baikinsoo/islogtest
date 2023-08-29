@@ -72,7 +72,7 @@ class PostControllerTest {
 
     @Test
     @DisplayName("/posts 요청시 DB에 값이 저장된다.")
-    void saveToDb() throws Exception {
+    void test3() throws Exception {
 
         PostCreate request = PostCreate.builder()
                 .title("제목입니다.")
@@ -94,5 +94,24 @@ class PostControllerTest {
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
+    }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test4() throws Exception {
+        //given
+        Post post = Post.builder()
+                .title("name")
+                .content("baekinsoo")
+                .build();
+        postRepository.save(post);
+        //expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts/{postId}", post.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value("name"))
+                .andExpect(jsonPath("$.content").value("baekinsoo"))
+                .andDo(MockMvcResultHandlers.print());
     }
 }

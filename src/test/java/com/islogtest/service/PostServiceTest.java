@@ -4,6 +4,7 @@ import com.islogtest.domain.Post;
 import com.islogtest.repository.PostRepository;
 import com.islogtest.request.PostCreate;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ class PostServiceTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @BeforeEach
+    void clean() {
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("글 작성")
@@ -37,5 +43,23 @@ class PostServiceTest {
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
+    }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test2() {
+        //given
+        Post request = Post.builder()
+                .title("name")
+                .content("insoo")
+                .build();
+
+        postRepository.save(request);
+        //when
+        postService.get(request.getId());
+        //then
+        assertEquals(1L, postRepository.count());
+        assertEquals("name", request.getTitle());
+        assertEquals("insoo",request.getContent());
     }
 }
