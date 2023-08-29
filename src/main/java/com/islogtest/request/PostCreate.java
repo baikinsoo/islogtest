@@ -1,9 +1,6 @@
 package com.islogtest.request;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -16,4 +13,10 @@ public class PostCreate {
 
     @NotBlank(message = "content를 입력해주세요")
     private String content;
+
+    @Builder
+    public PostCreate(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
