@@ -2,6 +2,7 @@ package com.islogtest.controller;
 
 import com.islogtest.domain.Post;
 import com.islogtest.request.PostCreate;
+import com.islogtest.response.PostResponse;
 import com.islogtest.service.PostService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,12 @@ public class PostController {
      * /posts/{postId} -> 글 한개만 조회
      * */
     @GetMapping("/posts/{postId}")
-    public Post get(@PathVariable Long postId) {
-        Post post = postService.get(postId);
-        return post;
+    public PostResponse get(@PathVariable Long postId) {
+        return postService.get(postId);
+    }
+
+    @GetMapping("/posts")
+    public List<PostResponse> getList() {
+        return postService.getList();
     }
 }

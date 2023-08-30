@@ -3,12 +3,16 @@ package com.islogtest.service;
 import com.islogtest.domain.Post;
 import com.islogtest.repository.PostRepository;
 import com.islogtest.request.PostCreate;
+import com.islogtest.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -53,13 +57,52 @@ class PostServiceTest {
                 .title("name")
                 .content("insoo")
                 .build();
-
         postRepository.save(request);
+
         //when
-        postService.get(request.getId());
+        PostResponse postResponse = postService.get(request.getId());
+
         //then
         assertEquals(1L, postRepository.count());
         assertEquals("name", request.getTitle());
         assertEquals("insoo",request.getContent());
+    }
+
+    @Test
+    @DisplayName("글 다건 조회")
+    void test3() {
+        postRepository.saveAll(List.of(
+                Post.builder()
+                        .title("Title_1")
+                        .content("Content_1")
+                        .build(),
+                Post.builder()
+                        .title("Title_2")
+                        .content("Content_2")
+                        .build()
+        ));
+
+        List<PostResponse> postResponses = postService.getList();
+
+        assertEquals(2L, postResponses.size());
+    }
+
+    @Test
+    @DisplayName("그냥 테스트")
+    void justTest() {
+        //given
+        Post request1 = Post.builder()
+                .title("name123123")
+                .content("insoo")
+                .build();
+        postRepository.save(request1);
+        //given
+        Post request2 = Post.builder()
+                .title("123123123123name")
+                .content("insoo")
+                .build();
+        postRepository.save(request2);
+
+        postService.getList();
     }
 }

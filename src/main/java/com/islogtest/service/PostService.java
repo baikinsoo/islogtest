@@ -3,9 +3,14 @@ package com.islogtest.service;
 import com.islogtest.domain.Post;
 import com.islogtest.repository.PostRepository;
 import com.islogtest.request.PostCreate;
+import com.islogtest.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,9 +27,20 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post get(Long postId) {
+    public PostResponse get(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
-        return post;
+
+        return PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+    }
+
+    public List<PostResponse> getList() {
+        return postRepository.findAll().stream()
+                .map(post -> new PostResponse(post))
+                .collect(Collectors.toList());
     }
 }
