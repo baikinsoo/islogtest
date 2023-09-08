@@ -3,6 +3,7 @@ package com.islogtest.service;
 import com.islogtest.domain.Post;
 import com.islogtest.repository.PostRepository;
 import com.islogtest.request.PostCreate;
+import com.islogtest.request.PostSearch;
 import com.islogtest.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,7 +83,12 @@ class PostServiceTest {
                         .build()
         ));
 
-        List<PostResponse> postResponses = postService.getList();
+        PostSearch postSearch = PostSearch.builder()
+                .page(1)
+                .size(10)
+                .build();
+
+        List<PostResponse> postResponses = postService.getList(postSearch);
 
         assertEquals(2L, postResponses.size());
     }
@@ -103,6 +109,11 @@ class PostServiceTest {
                 .build();
         postRepository.save(request2);
 
-        postService.getList();
+        PostSearch postSearch = PostSearch.builder()
+                .page(1)
+                .size(10)
+                .build();
+
+        List<PostResponse> postResponses = postService.getList(postSearch);
     }
 }

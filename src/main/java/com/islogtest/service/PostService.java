@@ -3,6 +3,7 @@ package com.islogtest.service;
 import com.islogtest.domain.Post;
 import com.islogtest.repository.PostRepository;
 import com.islogtest.request.PostCreate;
+import com.islogtest.request.PostSearch;
 import com.islogtest.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +40,8 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> getList(Pageable pageable) {
-        return postRepository.findAll(pageable).stream()
+    public List<PostResponse> getList(PostSearch postSearch) {
+        return postRepository.getList(postSearch).stream()
                 .map(post -> new PostResponse(post))
                 .collect(Collectors.toList());
     }

@@ -2,6 +2,7 @@ package com.islogtest.controller;
 
 import com.islogtest.domain.Post;
 import com.islogtest.request.PostCreate;
+import com.islogtest.request.PostSearch;
 import com.islogtest.response.PostResponse;
 import com.islogtest.service.PostService;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public List<PostResponse> getList(Pageable pageable) {
-        return postService.getList(pageable);
+    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
+        return postService.getList(postSearch);
     }
 }

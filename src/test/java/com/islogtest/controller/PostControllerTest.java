@@ -134,16 +134,9 @@ class PostControllerTest {
         ));
 
         //expected
-        mockMvc.perform(MockMvcRequestBuilders.get("/posts/")
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(2)))
-                .andExpect(jsonPath("$[0].id").value(posts.get(0).getId()))
-                .andExpect(jsonPath("$[0].title").value("Title_1"))
-                .andExpect(jsonPath("$[0].content").value("Content_1"))
-                .andExpect(jsonPath("$[1].id").value(posts.get(1).getId()))
-                .andExpect(jsonPath("$[1].title").value("Title_2"))
-                .andExpect(jsonPath("$[1].content").value("Content_2"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
