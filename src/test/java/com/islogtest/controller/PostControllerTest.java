@@ -139,4 +139,29 @@ class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    @Test
+    @DisplayName("페이지 검색 Test")
+    void pageTest() throws Exception {
+
+        List<Post> posts = postRepository.saveAll(List.of(
+                Post.builder()
+                        .title("Title_1")
+                        .content("Content_1")
+                        .build(),
+                Post.builder()
+                        .title("Title_2")
+                        .content("Content_2")
+                        .build()
+        ));
+
+        String json = objectMapper.writeValueAsString(posts);
+
+        //expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
 }
